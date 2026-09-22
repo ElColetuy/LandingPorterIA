@@ -128,30 +128,31 @@
   /* ---------- HERO ---------- */
   .hero{
     position: relative;
-    padding: 96px 0 80px;
+    padding: 120px 0 96px;
     overflow: hidden;
+    isolation: isolate;
   }
-  .hero-bg-blob{
+  .hero-photo{
     position: absolute;
-    top: -220px;
-    right: -160px;
-    width: 620px;
-    height: 620px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, var(--blue-light), transparent 70%);
-    opacity: .35;
-    filter: blur(10px);
-    pointer-events: none;
+    inset: 0;
+    z-index: -2;
+    background-image: url('assets/hero-bg.jpg');
+    background-size: cover;
+    background-position: center 65%;
+    transform: scale(1.06);
   }
-  .hero-bg-blob.two{
-    top: auto;
-    bottom: -260px;
-    right: auto;
-    left: -200px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle at 60% 40%, var(--blue-mid), transparent 70%);
-    opacity: .18;
+  .hero-photo::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(20,23,40,.72) 0%, rgba(24,27,46,.82) 55%, var(--bg) 96%),
+      linear-gradient(90deg, rgba(20,23,40,.35), transparent 40%, transparent 60%, rgba(20,23,40,.35));
+  }
+  :root[data-theme="light"] .hero-photo::after{
+    background:
+      linear-gradient(180deg, rgba(20,23,40,.6) 0%, rgba(53,58,83,.55) 55%, var(--bg) 97%),
+      linear-gradient(90deg, rgba(20,23,40,.3), transparent 40%, transparent 60%, rgba(20,23,40,.3));
   }
   .hero-inner{
     position: relative;
@@ -163,9 +164,10 @@
   .hero-label{
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: .08em;
+    letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     margin: 0 0 28px;
   }
 
@@ -191,7 +193,8 @@
   .hero-tagline{
     font-size: clamp(20px, 3vw, 26px);
     font-weight: 700;
-    color: var(--accent-strong);
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.35);
     margin: 8px 0 20px;
   }
 
@@ -199,7 +202,8 @@
     max-width: 640px;
     font-size: 17px;
     line-height: 1.65;
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.82);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     margin: 0 0 36px;
   }
 
@@ -224,20 +228,19 @@
     font-family: inherit;
   }
   .btn-primary{
-    background: var(--navy);
-    color: #fff;
-    box-shadow: 0 10px 24px -8px rgba(53,58,83,0.5);
+    background: #fff;
+    color: var(--navy);
+    border: 2px solid #fff;
+    box-shadow: 4px 4px 0 rgba(20,23,40,0.4);
   }
-  :root[data-theme="dark"] .btn-primary,
-  @media (prefers-color-scheme: dark){ }
-  .btn-primary{ background: var(--accent-strong); color: var(--bg); }
-  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 28px -8px rgba(53,58,83,0.55); }
+  .btn-primary:hover{ transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(20,23,40,0.4); }
   .btn-ghost{
     background: transparent;
-    border-color: var(--card-border);
-    color: var(--text);
+    border: 2px solid rgba(255,255,255,0.6);
+    color: #fff;
+    box-shadow: 4px 4px 0 rgba(20,23,40,0.25);
   }
-  .btn-ghost:hover{ background: var(--bg-alt); transform: translateY(-2px); }
+  .btn-ghost:hover{ background: rgba(255,255,255,0.12); border-color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(20,23,40,0.25); }
 
   /* ---------- MARQUEE / BARRIOS ---------- */
   .marquee-section{
@@ -578,13 +581,12 @@
 
 <main id="top">
   <section class="hero">
-    <div class="hero-bg-blob"></div>
-    <div class="hero-bg-blob two"></div>
+    <div class="hero-photo"></div>
     <div class="wrap hero-inner">
       <p class="hero-label">Próximamente en Montevideo</p>
 
       <h1 class="visually-hidden">PorterIA</h1>
-      <img class="hero-logo" id="heroLogo" src="assets/logo-light.png" alt="PorterIA">
+      <img class="hero-logo" id="heroLogo" src="assets/logo-dark.png" alt="PorterIA">
 
       <p class="hero-tagline">Tu barrio, más seguro y más conectado.</p>
       <p class="hero-desc">
@@ -722,7 +724,6 @@
     const iconSun = document.getElementById('iconSun');
     const iconMoon = document.getElementById('iconMoon');
     const label = document.getElementById('themeLabel');
-    const heroLogo = document.getElementById('heroLogo');
     const STORAGE_KEY = 'porteria-theme';
 
     function systemPrefersDark(){
@@ -732,13 +733,11 @@
     function applyTheme(theme){
       if(theme === 'dark'){
         root.setAttribute('data-theme', 'dark');
-        heroLogo.src = 'assets/logo-dark.png';
         iconSun.style.display = 'none';
         iconMoon.style.display = 'block';
         label.textContent = 'Claro';
       } else {
         root.setAttribute('data-theme', 'light');
-        heroLogo.src = 'assets/logo-light.png';
         iconSun.style.display = 'block';
         iconMoon.style.display = 'none';
         label.textContent = 'Oscuro';
