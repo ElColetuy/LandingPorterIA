@@ -146,11 +146,13 @@
     position: absolute;
     inset: 0;
     background:
+      radial-gradient(ellipse 55% 60% at 50% 42%, rgba(15,17,30,.55), transparent 70%),
       linear-gradient(180deg, rgba(20,23,40,.72) 0%, rgba(24,27,46,.82) 55%, var(--bg) 96%),
       linear-gradient(90deg, rgba(20,23,40,.35), transparent 40%, transparent 60%, rgba(20,23,40,.35));
   }
   :root[data-theme="light"] .hero-photo::after{
     background:
+      radial-gradient(ellipse 55% 60% at 50% 42%, rgba(15,17,30,.5), transparent 70%),
       linear-gradient(180deg, rgba(20,23,40,.6) 0%, rgba(53,58,83,.55) 55%, var(--bg) 97%),
       linear-gradient(90deg, rgba(20,23,40,.3), transparent 40%, transparent 60%, rgba(20,23,40,.3));
   }
@@ -176,6 +178,9 @@
     height: auto;
     margin-bottom: 8px;
     animation: float 5s ease-in-out infinite;
+    filter:
+      drop-shadow(0 2px 4px rgba(0,0,0,.55))
+      drop-shadow(0 10px 26px rgba(0,0,0,.4));
   }
   @keyframes float{
     0%, 100%{ transform: translateY(0); }
